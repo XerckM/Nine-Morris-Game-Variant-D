@@ -1,7 +1,9 @@
-positions_evaluated = 0  # Global variable to keep track of positions evaluated
+# Global variable to keep track of positions evaluated
+positions_evaluated = 0
 
 
 def close_mill(position, board):
+    """Check if a given position on the board is part of a mill."""
     match position:
         case 0:
             return (board[1] == board[0] and board[2] == board[0]) or (board[3] == board[0] and board[6] == board[0]) or (board[8] == board[0] and board[20] == board[0])
@@ -54,6 +56,7 @@ def close_mill(position, board):
 
 
 def get_neighbors(position):
+    """Return the neighboring positions for a given position on the board."""
     match position:
         case 0: return [1, 3, 8]
         case 1: return [0, 2, 4]
@@ -81,16 +84,17 @@ def get_neighbors(position):
         case _: return []
 
 
+
 def generate_remove(board):
+    """Generate all possible board configurations after removing a black piece."""
     L = []
-    for location in range(len(board)):  # Change made here
-        if board[location] == 'B':
-            if not close_mill(location, board):
-                b = board.copy()
-                b[location] = 'x'
-                L.append(b)
-    if not L:  # if no positions were added (all black pieces are in mills)
-        for location in range(len(board)):  # Change made here
+    for location in range(len(board)):
+        if board[location] == 'B' and not close_mill(location, board):
+            b = board.copy()
+            b[location] = 'x'
+            L.append(b)
+    if not L:
+        for location in range(len(board)):
             if board[location] == 'B':
                 b = board.copy()
                 b[location] = 'x'
@@ -99,6 +103,7 @@ def generate_remove(board):
 
 
 def generate_add(board):
+    """Generate all possible board configurations after adding a white piece."""
     L = []
     for location in range(len(board)):
         if board[location] == 'x':
@@ -112,12 +117,14 @@ def generate_add(board):
 
 
 def static_estimation_opening(board):
+    """Estimate the value of a board configuration during the opening phase."""
     global positions_evaluated
     positions_evaluated += 1
     return board.count('W') - board.count('B')
 
 
 def minimax_opening(board, depth, is_maximizing):
+    """Minimax algorithm for the opening phase."""
     if depth == 0:
         return static_estimation_opening(board), board
 
@@ -126,7 +133,7 @@ def minimax_opening(board, depth, is_maximizing):
         max_eval = float('-inf')
         best_move = None
         for move in possible_moves:
-            eval, _ = minimax_opening(move, depth-1, False)
+            eval, _ = minimax_opening(move, depth - 1, False)
             if eval > max_eval:
                 max_eval = eval
                 best_move = move
@@ -135,7 +142,7 @@ def minimax_opening(board, depth, is_maximizing):
         min_eval = float('inf')
         best_move = None
         for move in possible_moves:
-            eval, _ = minimax_opening(move, depth-1, True)
+            eval, _ = minimax_opening(move, depth - 1, True)
             if eval < min_eval:
                 min_eval = eval
                 best_move = move
@@ -143,6 +150,7 @@ def minimax_opening(board, depth, is_maximizing):
 
 
 def main(input_file, output_file, depth):
+    """Main function to read input, compute best move, and write output."""
     global positions_evaluated
     positions_evaluated = 0  # Reset the counter at the start of each run
 

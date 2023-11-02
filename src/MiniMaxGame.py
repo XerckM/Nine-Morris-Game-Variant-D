@@ -1,7 +1,9 @@
-positions_evaluated = 0  # Global variable to keep track of positions evaluated
+# Global variable to keep track of positions evaluated
+positions_evaluated = 0
 
 
 def close_mill(pos, board):
+    """Check if a given position on the board is part of a mill."""
     match pos:
         case 0:
             return (board[1] == board[0] and board[2] == board[0]) or (board[3] == board[0] and board[6] == board[0]) or (board[8] == board[0] and board[20] == board[0])
@@ -54,6 +56,7 @@ def close_mill(pos, board):
 
 
 def get_neighbors(position):
+    """Return the neighboring positions for a given position on the board."""
     match position:
         case 0: return [1, 3, 8]
         case 1: return [0, 2, 4]
@@ -82,15 +85,15 @@ def get_neighbors(position):
 
 
 def generate_remove(board):
+    """Generate all possible board configurations after removing a black piece."""
     L = []
     for location in range(len(board)):
-        if board[location] == 'B':
-            if not close_mill(location, board):
-                b = board.copy()
-                b[location] = 'x'
-                L.append(b)
-    if not L:  # if no positions were added (all black pieces are in mills)
-        for location in board:
+        if board[location] == 'B' and not close_mill(location, board):
+            b = board.copy()
+            b[location] = 'x'
+            L.append(b)
+    if not L:
+        for location in range(len(board)):
             if board[location] == 'B':
                 b = board.copy()
                 b[location] = 'x'
@@ -99,12 +102,13 @@ def generate_remove(board):
 
 
 def generate_move(board):
+    """Generate all possible board configurations after moving a white piece."""
     L = []
     for location in range(len(board)):
         if board[location] == 'W':
             neighbors = get_neighbors(location)
             for j in neighbors:
-                if board[j] == 'x':  # 'x' represents an empty spot
+                if board[j] == 'x':
                     b = board.copy()
                     b[location] = 'x'
                     b[j] = 'W'
@@ -116,7 +120,7 @@ def generate_move(board):
 
 
 def generate_hopping(board):
-    # Based on the pseudocode you provided earlier
+    """Generate all possible board configurations after hopping a white piece."""
     L = []
     for i in range(len(board)):
         if board[i] == 'W':
@@ -133,30 +137,33 @@ def generate_hopping(board):
 
 
 def static_estimation_opening(board):
+    """Estimate the value of a board configuration during the opening phase."""
     global positions_evaluated
     positions_evaluated += 1
     return board.count('W') - board.count('B')
 
 
 def static_estimation_midgame_endgame(board):
+    """Estimate the value of a board configuration during mid-game/endgame."""
     global positions_evaluated
     positions_evaluated += 1
-    numWhitePieces = board.count('W')
-    numBlackPieces = board.count('B')
-    L = generate_move(board)  # Assuming black's move
-    numBlackMoves = len(L)
+    num_white_pieces = board.count('W')
+    num_black_pieces = board.count('B')
+    L = generate_move(board)
+    num_black_moves = len(L)
 
-    if numBlackPieces <= 2:
+    if num_black_pieces <= 2:
         return 10000
-    elif numWhitePieces <= 2:
+    elif num_white_pieces <= 2:
         return -10000
-    elif numBlackMoves == 0:
+    elif num_black_moves == 0:
         return 10000
     else:
-        return 1000 * (numWhitePieces - numBlackPieces) - numBlackMoves
+        return 1000 * (num_white_pieces - num_black_pieces) - num_black_moves
 
 
 def minimax_game(board, depth, is_maximizing):
+    """Minimax algorithm for the game phase."""
     if depth == 0:
         if board.count('W') > 3:
             return static_estimation_midgame_endgame(board), board
@@ -172,7 +179,7 @@ def minimax_game(board, depth, is_maximizing):
         max_eval = float('-inf')
         best_move = None
         for move in possible_moves:
-            eval, _ = minimax_game(move, depth-1, False)
+            eval, _ = minimax_game(move, depth - 1, False)
             if eval > max_eval:
                 max_eval = eval
                 best_move = move
@@ -181,7 +188,7 @@ def minimax_game(board, depth, is_maximizing):
         min_eval = float('inf')
         best_move = None
         for move in possible_moves:
-            eval, _ = minimax_game(move, depth-1, True)
+            eval, _ = minimax_game(move, depth - 1, True)
             if eval < min_eval:
                 min_eval = eval
                 best_move = move
@@ -189,14 +196,15 @@ def minimax_game(board, depth, is_maximizing):
 
 
 def main(input_file, output_file, depth):
+    """Main function to read input, compute best move, and write output."""
     global positions_evaluated
-    positions_evaluated = 0  # Reset positions_evaluated to 0
+    positions_evaluated = 0  # Reset the counter at the start of each run
 
     # Read board from input_file
     with open(input_file, 'r') as f:
         board = list(f.readline().strip())
 
-    # Generate best move for white in midgame/endgame phase
+    # Generate best move for white in game phase
     minimax_estimate, best_move = minimax_game(board, depth, True)
 
     # Write best move to output_file
@@ -206,7 +214,7 @@ def main(input_file, output_file, depth):
     print(f"Input position: {''.join(board)}")
     print(f"Output position: {''.join(best_move)}")
     print(f"Positions evaluated by static estimation: {positions_evaluated}.")
-    print(f"MINIMAX estimate: {minimax_estimate}.")  # Corrected this line
+    print(f"MINIMAX estimate: {minimax_estimate}.")
 
 
 # If this script is run directly, it can be used as:
