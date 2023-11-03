@@ -4,6 +4,20 @@
 positions_evaluated = 0
 
 
+def reset_positions_evaluated():
+    global positions_evaluated
+    positions_evaluated = 0
+
+
+def increment_positions_evaluated():
+    global positions_evaluated
+    positions_evaluated += 1
+
+
+def get_positions_evaluated():
+    return positions_evaluated
+
+
 def close_mill(position, board):
     """Check if a given position on the board is part of a mill."""
     match position:
