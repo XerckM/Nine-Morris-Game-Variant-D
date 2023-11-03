@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from CommonFunctions import generate_add, static_estimation_opening
+from CommonFunctions import generate_add, static_estimation_opening, reset_positions_evaluated, get_positions_evaluated
+
 
 class MiniMaxOpening:
     def __init__(self):
@@ -33,8 +34,8 @@ class MiniMaxOpening:
 
     def main(self, input_file, output_file, depth):
         """Main function to read input, compute best move, and write output."""
-        global positions_evaluated
-        positions_evaluated = 0  # Reset the counter at the start of each run
+        # Reset the counter at the start of each run
+        reset_positions_evaluated()
 
         try:
             # Read board from input_file
@@ -50,7 +51,7 @@ class MiniMaxOpening:
 
             print(f"Input position: {''.join(board)}")
             print(f"Output position: {''.join(best_move)}")
-            print(f"Positions evaluated by static estimation: {positions_evaluated}.")
+            print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
             print(f"MINIMAX estimate: {minimax_estimate}.")
         except FileNotFoundError:
             print(f"Error: File '{input_file}' not found.")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from CommonFunctions import close_mill, get_neighbors, generate_remove, static_estimation_opening
+from CommonFunctions import close_mill, get_neighbors, generate_remove, static_estimation_opening, reset_positions_evaluated, get_positions_evaluated
 
 
 class MiniMaxGame:
@@ -44,8 +44,7 @@ class MiniMaxGame:
 
     def static_estimation_midgame_endgame(self, board):
         """Estimate the value of a board configuration during mid-game/endgame."""
-        global positions_evaluated
-        positions_evaluated += 1
+        reset_positions_evaluated()  # Reset the counter at the start of each run
         num_white_pieces = board.count('W')
         num_black_pieces = board.count('B')
         L = self.generate_move(board)
@@ -94,8 +93,8 @@ class MiniMaxGame:
 
     def main(self, input_file, output_file, depth):
         """Main function to read input, compute best move, and write output."""
-        global positions_evaluated
-        positions_evaluated = 0  # Reset the counter at the start of each run
+        # Reset the counter at the start of each run
+        reset_positions_evaluated()
 
         # Read board from input_file
         with open(input_file, 'r') as f:
@@ -110,5 +109,5 @@ class MiniMaxGame:
 
         print(f"Input position: {''.join(board)}")
         print(f"Output position: {''.join(best_move)}")
-        print(f"Positions evaluated by static estimation: {positions_evaluated}.")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
         print(f"MINIMAX estimate: {minimax_estimate}.")
