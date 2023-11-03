@@ -117,6 +117,23 @@ def generate_remove(board):
     return L
 
 
+def generate_remove_black(board):
+    """Generate all possible board configurations after removing a white piece."""
+    L = []
+    for location in range(len(board)):
+        if board[location] == 'W' and not close_mill(location, board):
+            b = board.copy()
+            b[location] = 'x'
+            L.append(b)
+    if not L:
+        for location in range(len(board)):
+            if board[location] == 'W':
+                b = board.copy()
+                b[location] = 'x'
+                L.append(b)
+    return L
+
+
 def generate_add(board):
     """Generate all possible board configurations after adding a white piece."""
     L = []
@@ -131,11 +148,18 @@ def generate_add(board):
     return L
 
 
-def static_estimation_opening(board):
-    """Estimate the value of a board configuration during the opening phase."""
-    # Increment the counter for positions evaluated
-    increment_positions_evaluated()
-    return board.count('W') - board.count('B')
+def generate_add_black(board):
+    """Generate all possible board configurations after adding a black piece."""
+    L = []
+    for location in range(len(board)):
+        if board[location] == 'x':
+            b = board.copy()
+            b[location] = 'B'
+            if close_mill(location, b):
+                L.extend(generate_remove_black(b))
+            else:
+                L.append(b)
+    return L
 
 
 def generate_move(board):
@@ -151,6 +175,24 @@ def generate_move(board):
                     b[j] = 'W'
                     if close_mill(j, b):
                         L.extend(generate_remove(b))
+                    else:
+                        L.append(b)
+    return L
+
+
+def generate_move_black(board):
+    """Generate all possible board configurations after moving a black piece."""
+    L = []
+    for location in range(len(board)):
+        if board[location] == 'B':
+            neighbors = get_neighbors(location)
+            for j in neighbors:
+                if board[j] == 'x':
+                    b = board.copy()
+                    b[location] = 'x'
+                    b[j] = 'B'
+                    if close_mill(j, b):
+                        L.extend(generate_remove_black(b))
                     else:
                         L.append(b)
     return L
@@ -173,14 +215,46 @@ def generate_hopping(board):
     return L
 
 
+def generate_hopping_black(board):
+    """Generate all possible board configurations after hopping a black piece."""
+    L = []
+    for i in range(len(board)):
+        if board[i] == 'B':
+            for j in range(len(board)):
+                if board[j] == 'x':
+                    b = board.copy()
+                    b[i] = 'x'
+                    b[j] = 'B'
+                    if close_mill(j, b):
+                        L.extend(generate_remove_black(b))
+                    else:
+                        L.append(b)
+    return L
+
+
+def static_estimation_opening(board):
+    """Estimate the value of a board configuration during the opening phase."""
+    # Increment the counter for positions evaluated
+    increment_positions_evaluated()
+    return board.count('W') - board.count('B')
+
+
+def static_estimation_opening_black(board):
+    """Estimate the value of a board configuration during the opening phase."""
+    # Increment the counter for positions evaluated
+    increment_positions_evaluated()
+    return board.count('B') - board.count('W')
+
+
 def static_estimation_midgame_endgame(board):
-    """Estimate the value of a board configuration during mid-game/endgame."""
+    """Estimate the value of a board configuration during mid-game/endgame for white."""
     # Increment the counter for positions evaluated
     increment_positions_evaluated()
     num_white_pieces = board.count('W')
     num_black_pieces = board.count('B')
-    L = generate_move(board)
-    num_black_moves = len(L)
+    num_black_moves = len(generate_move(board))
+
+    print(num_white_pieces, num_black_pieces, num_black_moves)
 
     if num_black_pieces <= 2:
         return 10000
@@ -190,3 +264,39 @@ def static_estimation_midgame_endgame(board):
         return 10000
     else:
         return 1000 * (num_white_pieces - num_black_pieces) - num_black_moves
+
+
+def static_estimation_midgame_endgame_black(board):
+    """Estimate the value of a board configuration during mid-game/endgame for white."""
+    # Increment the counter for positions evaluated
+    increment_positions_evaluated()
+    num_white_pieces = board.count('W')
+    num_black_pieces = board.count('B')
+    num_white_moves = len(generate_move_black(board))
+
+    if num_white_pieces <= 2:
+        return 10000
+    elif num_black_pieces <= 2:
+        return -10000
+    elif num_white_moves == 0:
+        return 10000
+    else:
+        return 1000 * (num_black_pieces - num_white_pieces) - num_white_moves
+
+
+def generate_moves_midgame_endgame(board):
+    if board.count('W') == 3:
+        possible_moves = generate_hopping(board)
+    else:
+        possible_moves = generate_move(board)
+
+    return possible_moves
+
+
+def generate_moves_midgame_endgame_black(board):
+    if board.count('B') == 3:
+        possible_moves = generate_hopping_black(board)
+    else:
+        possible_moves = generate_move_black(board)
+
+    return possible_moves
