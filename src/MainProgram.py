@@ -2,6 +2,8 @@
 
 from MiniMaxOpening import MiniMaxOpening
 from MiniMaxGame import MiniMaxGame
+from MiniMaxOpeningBlack import MiniMaxOpeningBlack
+from MiniMaxGameBlack import MiniMaxGameBlack
 from ABOpening import ABOpening
 from ABGame import ABGame
 
@@ -23,6 +25,16 @@ def ab_opening_main(input_file, output_file, depth):
 
 def ab_game_main(input_file, output_file, depth):
     game = ABGame()
+    game.main(input_file, output_file, depth)
+
+
+def mini_max_opening_black_main(input_file, output_file, depth):
+    opening = MiniMaxOpeningBlack()
+    opening.main(input_file, output_file, depth)
+
+
+def mini_max_game_black_main(input_file, output_file, depth):
+    game = MiniMaxGameBlack()
     game.main(input_file, output_file, depth)
 
 
@@ -57,6 +69,16 @@ if __name__ == "__main__":
         elif len(parts) == 4 and parts[0] == "ABGame":
             input_file, output_file, depth = parts[1], parts[2], int(parts[3])
             ab_game_main(input_file, output_file, depth)
+
+        # Check if the command is valid for MiniMaxOpeningBlack
+        elif len(parts) == 4 and parts[0] == "MiniMaxOpeningBlack":
+            input_file, output_file, depth = parts[1], parts[2], int(parts[3])
+            mini_max_opening_black_main(input_file, output_file, depth)
+
+        # Check if the command is valid for MiniMaxGameBlack
+        elif len(parts) == 4 and parts[0] == "MiniMaxGameBlack":
+            input_file, output_file, depth = parts[1], parts[2], int(parts[3])
+            mini_max_game_black_main(input_file, output_file, depth)
 
         else:
             print("Invalid command. Please use the format:")
