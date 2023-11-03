@@ -133,6 +133,60 @@ def generate_add(board):
 
 def static_estimation_opening(board):
     """Estimate the value of a board configuration during the opening phase."""
-    global positions_evaluated
-    positions_evaluated += 1
+    # Increment the counter for positions evaluated
+    increment_positions_evaluated()
     return board.count('W') - board.count('B')
+
+
+def generate_move(board):
+    """Generate all possible board configurations after moving a white piece."""
+    L = []
+    for location in range(len(board)):
+        if board[location] == 'W':
+            neighbors = get_neighbors(location)
+            for j in neighbors:
+                if board[j] == 'x':
+                    b = board.copy()
+                    b[location] = 'x'
+                    b[j] = 'W'
+                    if close_mill(j, b):
+                        L.extend(generate_remove(b))
+                    else:
+                        L.append(b)
+    return L
+
+
+def generate_hopping(board):
+    """Generate all possible board configurations after hopping a white piece."""
+    L = []
+    for i in range(len(board)):
+        if board[i] == 'W':
+            for j in range(len(board)):
+                if board[j] == 'x':
+                    b = board.copy()
+                    b[i] = 'x'
+                    b[j] = 'W'
+                    if close_mill(j, b):
+                        L.extend(generate_remove(b))
+                    else:
+                        L.append(b)
+    return L
+
+
+def static_estimation_midgame_endgame(board):
+    """Estimate the value of a board configuration during mid-game/endgame."""
+    # Increment the counter for positions evaluated
+    increment_positions_evaluated()
+    num_white_pieces = board.count('W')
+    num_black_pieces = board.count('B')
+    L = generate_move(board)
+    num_black_moves = len(L)
+
+    if num_black_pieces <= 2:
+        return 10000
+    elif num_white_pieces <= 2:
+        return -10000
+    elif num_black_moves == 0:
+        return 10000
+    else:
+        return 1000 * (num_white_pieces - num_black_pieces) - num_black_moves
