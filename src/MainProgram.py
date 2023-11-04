@@ -50,13 +50,43 @@ def mini_max_game_improved_main(input_file, output_file, depth):
     game.main(input_file, output_file, depth)
 
 
+def display_help():
+    commands = [
+        "MiniMaxOpening",
+        "MiniMaxGame",
+        "ABOpening",
+        "ABGame",
+        "MiniMaxOpeningBlack",
+        "MiniMaxGameBlack",
+        "MiniMaxOpeningImproved",
+        "MiniMaxGameImproved"
+    ]
+    print("List of acceptable commands:\n")
+    for cmd in commands:
+        print(f"{cmd}")
+    print()
+
+
 if __name__ == "__main__":
+    print("Nine Morris Game Variant D\n")
+    print("Instructions: Enter the command followed by the input file, output file, and depth.\n")
+    print("Format: <command> <input_file_location> <output_file_location> <depth>\n")
+    print("Example: \n\n "
+          "MiniMaxOpening input.txt output.txt 3\n\n "
+          "or \n\n "
+          "MiniMaxOpeningBlack ./test/input.txt ./test/output.txt 3\n")
+    print("Type '-help' for a list of acceptable commands.")
+    print("Type 'exit' or 'quit' to end the program.\n")
+
     while True:
         command = input(">>> ")
         parts = command.split()
 
         if command.lower() in ["exit", "quit"]:
             break
+        elif command.lower() == "-help":
+            display_help()
+            continue
 
         if len(parts) == 4:
             input_file, output_file, depth = parts[1], parts[2], int(parts[3])
