@@ -2,10 +2,10 @@
 
 from MiniMaxOpening import MiniMaxOpening
 from MiniMaxGame import MiniMaxGame
-from MiniMaxOpeningBlack import MiniMaxOpeningBlack
-from MiniMaxGameBlack import MiniMaxGameBlack
 from ABOpening import ABOpening
 from ABGame import ABGame
+from MiniMaxOpeningBlack import MiniMaxOpeningBlack
+from MiniMaxGameBlack import MiniMaxGameBlack
 from MiniMaxOpeningImproved import MiniMaxOpeningImproved
 from MiniMaxGameImproved import MiniMaxGameImproved
 
