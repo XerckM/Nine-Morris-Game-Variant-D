@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-from CommonFunctions import (
+from utils.common_functions import (
     get_positions_evaluated,
     reset_positions_evaluated
 )
-from MiniMaxOpening import MiniMaxOpening
-from MiniMaxGame import MiniMaxGame
-from ABOpening import ABOpening
-from ABGame import ABGame
-from MiniMaxOpeningBlack import MiniMaxOpeningBlack
-from MiniMaxGameBlack import MiniMaxGameBlack
-from MiniMaxOpeningImproved import MiniMaxOpeningImproved
-from MiniMaxGameImproved import MiniMaxGameImproved
+from modules.minimax_opening import MiniMaxOpening
+from modules.minimax_game import MiniMaxGame
+from modules.ab_opening import ABOpening
+from modules.ab_game import ABGame
+from modules.minimax_opening_black import MiniMaxOpeningBlack
+from modules.minimax_game_black import MiniMaxGameBlack
+from modules.minimax_opening_improved import MiniMaxOpeningImproved
+from modules.minimax_game_improved import MiniMaxGameImproved
 
 
 def open_board(input_file):

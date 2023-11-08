@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-from CommonFunctions import (
+from utils.common_functions import (
     generate_add, static_estimation_opening,
-    reset_positions_evaluated, get_positions_evaluated,
     invert_board
 )
 

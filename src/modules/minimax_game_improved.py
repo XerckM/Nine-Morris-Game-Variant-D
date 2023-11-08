@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from CommonFunctions import (
+from utils.common_functions import (
     static_estimation_opening_improved, generate_moves_midgame_endgame,
     static_estimation_midgame_endgame_improved, reset_positions_evaluated,
     get_positions_evaluated
