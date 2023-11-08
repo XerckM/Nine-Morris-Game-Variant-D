@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+from CommonFunctions import (
+    get_positions_evaluated,
+    reset_positions_evaluated
+)
 from MiniMaxOpening import MiniMaxOpening
 from MiniMaxGame import MiniMaxGame
 from ABOpening import ABOpening
@@ -10,44 +14,189 @@ from MiniMaxOpeningImproved import MiniMaxOpeningImproved
 from MiniMaxGameImproved import MiniMaxGameImproved
 
 
+def open_board(input_file):
+    with open(input_file, 'r') as f:
+        board = list(f.readline().strip())
+    return board
+
+
+def write_best_move(output_file, best_move):
+    with open(output_file, 'w') as f:
+        f.write(''.join(best_move))
+
+
 def mini_max_opening_main(input_file, output_file, depth):
-    opening = MiniMaxOpening()
-    opening.main(input_file, output_file, depth)
+    game = MiniMaxOpening()
+    try:
+        board = open_board(input_file)
+
+        minimax_estimate, best_move = game.minimax_opening(board, depth, True)
+
+        write_best_move(output_file, best_move)
+
+        print(f"Input position: {''.join(board)}")
+        print(f"Output position: {''.join(best_move)}")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
+        print(f"MINIMAX estimate: {minimax_estimate}.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except ValueError:
+        print("Error: Depth must be an integer.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def mini_max_game_main(input_file, output_file, depth):
     game = MiniMaxGame()
-    game.main(input_file, output_file, depth)
+    try:
+        board = open_board(input_file)
+
+        minimax_estimate, best_move = game.minimax_game(board, depth, True)
+
+        write_best_move(output_file, best_move)
+
+        print(f"Input position: {''.join(board)}")
+        print(f"Output position: {''.join(best_move)}")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
+        print(f"MINIMAX estimate: {minimax_estimate}.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except ValueError:
+        print("Error: Depth must be an integer.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def ab_opening_main(input_file, output_file, depth):
-    opening = ABOpening()
-    opening.main(input_file, output_file, depth)
+    game = ABOpening()
+    try:
+        board = open_board(input_file)
+
+        ab_estimate, best_move = game.ab_opening(board, depth, float('-inf'), float('inf'), True)
+
+        write_best_move(output_file, best_move)
+
+        print(f"Input position: {''.join(board)}")
+        print(f"Output position: {''.join(best_move)}")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
+        print(f"ALPHA-BETA estimate: {ab_estimate}.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except ValueError:
+        print("Error: Depth must be an integer.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def ab_game_main(input_file, output_file, depth):
     game = ABGame()
-    game.main(input_file, output_file, depth)
+    try:
+        board = open_board(input_file)
+
+        ab_estimate, best_move = game.ab_game(board, depth, float('-inf'), float('inf'), True)
+
+        write_best_move(output_file, best_move)
+
+        print(f"Input position: {''.join(board)}")
+        print(f"Output position: {''.join(best_move)}")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
+        print(f"ALPHA-BETA estimate: {ab_estimate}.")
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except ValueError:
+        print("Error: Depth must be an integer.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def mini_max_opening_black_main(input_file, output_file, depth):
-    opening = MiniMaxOpeningBlack()
-    opening.main(input_file, output_file, depth)
+    game = MiniMaxOpeningBlack()
+    try:
+        board = open_board(input_file)
+
+        minimax_estimate, best_move = game.minimax_opening_black(board, depth, True)
+
+        write_best_move(output_file, best_move)
+
+        print(f"Input position: {''.join(board)}")
+        print(f"Output position: {''.join(best_move)}")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
+        print(f"MINIMAX estimate for black: {minimax_estimate}.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except ValueError:
+        print("Error: Depth must be an integer.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def mini_max_game_black_main(input_file, output_file, depth):
     game = MiniMaxGameBlack()
-    game.main(input_file, output_file, depth)
+    try:
+        board = open_board(input_file)
+
+        minimax_estimate, best_move = game.minimax_game_black(board, depth, True)
+
+        write_best_move(output_file, best_move)
+
+        print(f"Input position: {''.join(board)}")
+        print(f"Output position: {''.join(best_move)}")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
+        print(f"MINIMAX estimate for black: {minimax_estimate}.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except ValueError:
+        print("Error: Depth must be an integer.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def mini_max_opening_improved_main(input_file, output_file, depth):
-    opening = MiniMaxOpeningImproved()
-    opening.main(input_file, output_file, depth)
+    game = MiniMaxOpeningImproved()
+    try:
+        board = open_board(input_file)
+
+        minimax_estimate, best_move = game.minimax_opening_improved(board, depth, True)
+
+        write_best_move(output_file, best_move)
+
+        print(f"Input position: {''.join(board)}")
+        print(f"Output position: {''.join(best_move)}")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
+        print(f"Improved MINIMAX estimate: {minimax_estimate}.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except ValueError:
+        print("Error: Depth must be an integer.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def mini_max_game_improved_main(input_file, output_file, depth):
     game = MiniMaxGameImproved()
-    game.main(input_file, output_file, depth)
+    try:
+        board = open_board(input_file)
+
+        minimax_estimate, best_move = game.minimax_game_improved(board, depth, True)
+
+        write_best_move(output_file, best_move)
+
+        print(f"Input position: {''.join(board)}")
+        print(f"Output position: {''.join(best_move)}")
+        print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
+        print(f"Improved MINIMAX estimate: {minimax_estimate}.")
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except ValueError:
+        print("Error: Depth must be an integer.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def display_help():
@@ -79,6 +228,8 @@ if __name__ == "__main__":
     print("Type 'exit' or 'quit' to end the program.\n")
 
     while True:
+        reset_positions_evaluated()
+
         command = input(">>> ")
         parts = command.split()
 

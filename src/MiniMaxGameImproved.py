@@ -11,7 +11,7 @@ class MiniMaxGameImproved:
     def __init__(self):
         pass
 
-    def minimax_game(self, board, depth, is_maximizing):
+    def minimax_game_improved(self, board, depth, is_maximizing):
         """Minimax algorithm for the game phase with improved static estimation."""
         if depth == 0:
             if board.count('W') > 3:
@@ -24,7 +24,7 @@ class MiniMaxGameImproved:
             max_eval = float('-inf')
             best_move = None
             for move in possible_moves:
-                eval_value, _ = self.minimax_game(move, depth - 1, False)
+                eval_value, _ = self.minimax_game_improved(move, depth - 1, False)
                 if eval_value > max_eval:
                     max_eval = eval_value
                     best_move = move
@@ -33,7 +33,7 @@ class MiniMaxGameImproved:
         min_eval = float('inf')
         best_move = None
         for move in possible_moves:
-            eval_value, _ = self.minimax_game(move, depth - 1, True)
+            eval_value, _ = self.minimax_game_improved(move, depth - 1, True)
             if eval_value < min_eval:
                 min_eval = eval_value
                 best_move = move
@@ -46,7 +46,7 @@ class MiniMaxGameImproved:
         with open(input_file, 'r') as f:
             board = list(f.readline().strip())
 
-        minimax_estimate, best_move = self.minimax_game(board, depth, True)
+        minimax_estimate, best_move = self.minimax_game_improved(board, depth, True)
 
         with open(output_file, 'w') as f:
             f.write(''.join(best_move))
