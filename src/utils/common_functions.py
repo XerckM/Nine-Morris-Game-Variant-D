@@ -5,24 +5,42 @@ positions_evaluated = 0
 
 
 def reset_positions_evaluated():
-    """Reset the global counter for positions evaluated."""
+    """
+    Reset the global counter for positions evaluated.
+    """
     global positions_evaluated
     positions_evaluated = 0
 
 
 def increment_positions_evaluated():
-    """Increment the global counter for positions evaluated."""
+    """
+    Increment the global counter for positions evaluated.
+    """
     global positions_evaluated
     positions_evaluated += 1
 
 
 def get_positions_evaluated():
-    """Return the number of positions evaluated."""
+    """
+    Return the number of positions evaluated.
+
+    Returns:
+    - int: The current count of positions evaluated.
+    """
     return positions_evaluated
 
 
 def close_mill(position, board):
-    """Check if a given position on the board is part of a mill."""
+    """
+    Check if a given position on the board is part of a mill.
+
+    Parameters:
+    - position (int): The index of the position to check.
+    - board (list): The current board configuration.
+
+    Returns:
+    - bool: True if the position is part of a mill, False otherwise.
+    """
     match position:
         case 0:
             return (
@@ -145,9 +163,16 @@ def close_mill(position, board):
         case _: return False
 
 
-
 def get_neighbors(position):
-    """Return the neighboring positions for a given position on the board."""
+    """
+    Return the neighboring positions for a given position on the board.
+
+    Parameters:
+    - position (int): The index of the position whose neighbors are to be found.
+
+    Returns:
+    - list: A list of indices representing neighboring positions.
+    """
     match position:
         case 0: return [1, 3, 8]
         case 1: return [0, 2, 4]
@@ -176,12 +201,28 @@ def get_neighbors(position):
 
 
 def invert_board(board):
-    """Invert the board by swapping 'W' with 'B' and vice versa."""
+    """
+    Invert the board by swapping 'W' with 'B' and vice versa.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - list: The inverted board configuration.
+    """
     return ['W' if x == 'B' else 'B' if x == 'W' else x for x in board]
 
 
 def generate_remove(board):
-    """Generate all possible board configurations after removing a black piece."""
+    """
+    Generate all possible board configurations after removing a black piece.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - list: A list of possible board configurations after removal.
+    """
     L = []
     for location in range(len(board)):
         if board[location] == 'B' and not close_mill(location, board):
@@ -198,7 +239,15 @@ def generate_remove(board):
 
 
 def generate_add(board):
-    """Generate all possible board configurations after adding a white piece."""
+    """
+    Generate all possible board configurations after adding a white piece.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - list: A list of possible board configurations after addition.
+    """
     L = []
     for location in range(len(board)):
         if board[location] == 'x':
@@ -212,7 +261,15 @@ def generate_add(board):
 
 
 def generate_move(board):
-    """Generate all possible board configurations after moving a white piece."""
+    """
+    Generate all possible board configurations after moving a white piece.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - list: A list of possible board configurations after a move.
+    """
     L = []
     for location in range(len(board)):
         if board[location] == 'W':
@@ -230,7 +287,15 @@ def generate_move(board):
 
 
 def generate_move_black(board):
-    """Generate all possible board configurations after moving a black piece."""
+    """
+    Generate all possible board configurations after moving a black piece.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - list: A list of possible board configurations after a move.
+    """
     L = []
     for location in range(len(board)):
         if board[location] == 'B':
@@ -248,7 +313,15 @@ def generate_move_black(board):
 
 
 def generate_hopping(board):
-    """Generate all possible board configurations after hopping a white piece."""
+    """
+    Generate all possible board configurations after hopping a white piece.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - list: A list of possible board configurations after hopping.
+    """
     L = []
     for i in range(len(board)):
         if board[i] == 'W':
@@ -265,14 +338,30 @@ def generate_hopping(board):
 
 
 def static_estimation_opening(board):
-    """Estimate the value of a board configuration during the opening phase."""
+    """
+    Estimate the value of a board configuration during the opening phase.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - int: The estimated value of the board configuration.
+    """
     # Increment the counter for positions evaluated
     increment_positions_evaluated()
     return board.count('W') - board.count('B')
 
 
 def static_estimation_midgame_endgame(board):
-    """Estimate the value of a board configuration during mid-game/endgame for white."""
+    """
+    Estimate the value of a board configuration during mid-game/endgame for white.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - int: The estimated value of the board configuration.
+    """
     # Increment the counter for positions evaluated
     increment_positions_evaluated()
     num_white_pieces = board.count('W')
@@ -290,7 +379,15 @@ def static_estimation_midgame_endgame(board):
 
 
 def generate_moves_midgame_endgame(board):
-    """Generate possible moves for midgame and endgame for white pieces."""
+    """
+    Generate possible moves for midgame and endgame for white pieces.
+
+    Parameters:
+    - board (list): The current board configuration.
+
+    Returns:
+    - list: A list of possible moves for white pieces.
+    """
     if board.count('W') == 3:
         possible_moves = generate_hopping(board)
     else:
@@ -300,7 +397,16 @@ def generate_moves_midgame_endgame(board):
 
 
 def count_mills(board, player):
-    """Count the number of mills for a given player."""
+    """
+    Count the number of mills for a given player.
+
+    Parameters:
+    - board (list): The current board configuration.
+    - player (str): The player to check for mills ('W' for white, 'B' for black).
+
+    Returns:
+    - int: The number of mills the player has.
+    """
     mills = 0
     for i in range(len(board)):
         if board[i] == player and close_mill(i, board):
@@ -309,7 +415,16 @@ def count_mills(board, player):
 
 
 def count_potential_mills(board, player):
-    """Count the number of potential mills for a given player."""
+    """
+    Count the number of potential mills for a given player.
+
+    Parameters:
+    - board (list): The current board configuration.
+    - player (str): The player to check for potential mills ('W' for white, 'B' for black).
+
+    Returns:
+    - int: The number of potential mills the player has.
+    """
     potential_mills = 0
     for i in range(len(board)):
         if board[i] == player:
@@ -321,7 +436,16 @@ def count_potential_mills(board, player):
 
 
 def count_double_mills(board, player):
-    """Count the number of pieces that are part of two mills."""
+    """
+    Count the number of pieces that are part of two mills.
+
+    Parameters:
+    - board (list): The current board configuration.
+    - player (str): The player to check for double mills ('W' for white, 'B' for black).
+
+    Returns:
+    - int: The number of pieces that are part of two mills.
+    """
     double_mills = 0
     for i in range(len(board)):
         if board[i] == player:
@@ -335,7 +459,16 @@ def count_double_mills(board, player):
 
 
 def count_blocked_pieces(board, player):
-    """Count the number of pieces that have no legal moves."""
+    """
+    Count the number of pieces that have no legal moves.
+
+    Parameters:
+    - board (list): The current board configuration.
+    - player (str): The player to check for blocked pieces ('W' for white, 'B' for black).
+
+    Returns:
+    - int: The number of blocked pieces the player has.
+    """
     blocked_pieces = 0
     for i in range(len(board)):
         if board[i] == player:
@@ -349,12 +482,30 @@ def count_blocked_pieces(board, player):
 
 
 def distance_to_conversion(board, player):
-    """Calculate the distance to conversion (number of pieces more than 3)."""
+    """
+    Calculate the distance to conversion (number of pieces more than 3).
+
+    Parameters:
+    - board (list): The current board configuration.
+    - player (str): The player to check the distance to conversion for ('W' for white, 'B' for black).
+
+    Returns:
+    - int: The distance to conversion for the player.
+    """
     return max(0, board.count(player) - 3)
 
 
 def count_center_control(board, player):
-    """Count the number of pieces a player has in the central positions."""
+    """
+    Count the number of pieces a player has in the central positions.
+
+    Parameters:
+    - board (list): The current board configuration.
+    - player (str): The player to check for center control ('W' for white, 'B' for black).
+
+    Returns:
+    - int: The number of pieces in the central positions.
+    """
     central_positions = [4, 10, 13, 19]
     return sum(1 for pos in central_positions if board[pos] == player)
 
@@ -379,7 +530,16 @@ def can_be_removed(position, board):
 
 
 def count_safe_pieces(board, player):
-    """Count the number of pieces that are part of a mill or cannot be removed."""
+    """
+    Count the number of pieces that are part of a mill or cannot be removed.
+
+    Parameters:
+    - board (list): The current board configuration.
+    - player (str): The player to check for safe pieces ('W' for white, 'B' for black).
+
+    Returns:
+    - int: The number of safe pieces the player has.
+    """
     safe_pieces = 0
     for i in range(len(board)):
         if board[i] == player and (close_mill(i, board) or not can_be_removed(i, board)):
@@ -388,7 +548,16 @@ def count_safe_pieces(board, player):
 
 
 def count_threats(board, player):
-    """Count the number of pieces that are threatened to be part of an opponent's mill in the next move."""
+    """
+    Count the number of pieces that are threatened to be part of an opponent's mill in the next move.
+
+    Parameters:
+    - board (list): The current board configuration.
+    - player (str): The player to check for threats against ('W' for white, 'B' for black).
+
+    Returns:
+    - int: The number of threats against the player's pieces.
+    """
     threats = 0
     opponent = 'B' if player == 'W' else 'W'
     for i in range(len(board)):
@@ -405,7 +574,16 @@ def count_threats(board, player):
 
 
 def piece_vulnerability(position, board):
-    """Calculate the vulnerability of a piece at a given position."""
+    """
+    Calculate the vulnerability of a piece at a given position.
+
+    Parameters:
+    - position (int): The position of the piece on the board.
+    - board (list): The current board configuration.
+
+    Returns:
+    - int: The vulnerability score of the piece (higher means more vulnerable).
+    """
     player = board[position]
     opponent = 'B' if player == 'W' else 'W'
     vulnerable = 1 if board[position] != 'x' and not close_mill(position, board) else 0
@@ -414,7 +592,16 @@ def piece_vulnerability(position, board):
 
 
 def piece_strength(position, board):
-    """Calculate the strength of a piece at a given position based on potential mills."""
+    """
+    Calculate the strength of a piece at a given position based on potential mills.
+
+    Parameters:
+    - position (int): The position of the piece on the board.
+    - board (list): The current board configuration.
+
+    Returns:
+    - int: The strength score of the piece (higher means stronger).
+    """
     player = board[position]
     strength = 0
     if board[position] == player:
