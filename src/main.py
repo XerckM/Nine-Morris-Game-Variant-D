@@ -17,6 +17,8 @@ from modules.minimax_opening_black import MiniMaxOpeningBlack
 from modules.minimax_game_black import MiniMaxGameBlack
 from modules.minimax_opening_improved import MiniMaxOpeningImproved
 from modules.minimax_game_improved import MiniMaxGameImproved
+from modules.ab_opening_improved import ABOpeningImproved
+from modules.ab_game_improved import ABGameImproved
 
 
 # Dictionary to map commands to game classes
@@ -28,7 +30,9 @@ command_mapping = {
     "MiniMaxOpeningBlack": MiniMaxOpeningBlack,
     "MiniMaxGameBlack": MiniMaxGameBlack,
     "MiniMaxOpeningImproved": MiniMaxOpeningImproved,
-    "MiniMaxGameImproved": MiniMaxGameImproved
+    "MiniMaxGameImproved": MiniMaxGameImproved,
+    "ABOpeningImproved": ABOpeningImproved,
+    "ABGameImproved": ABGameImproved
 }
 
 
@@ -36,6 +40,8 @@ command_mapping = {
 class_name_to_message = {
     "ABOpening": "Alpha-Beta Pruning estimate: {}.",
     "ABGame": "Alpha-Beta Pruning estimate: {}.",
+    "ABOpeningImproved": "Improved Alpha-Beta Pruning estimate: {}.",
+    "ABGameImproved": "Improved Alpha-Beta Pruning estimate: {}.",
     "MiniMaxOpeningImproved": "Improved MINIMAX estimate: {}.",
     "MiniMaxGameImproved": "Improved MINIMAX estimate: {}.",
     "MiniMaxOpeningBlack": "MINIMAX estimate for black: {}.",
@@ -76,6 +82,7 @@ def game_main(game_class: Callable[..., Any], input_file: str, output_file: str,
         print(f"Output position: {''.join(best_move)}")
         print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
 
+        # Depending on the class the estimate is printed differently
         class_name = game.__class__.__name__
         message = class_name_to_message.get(class_name, "MINIMAX estimate: {}.")
         print(message.format(estimate))
@@ -90,7 +97,7 @@ if __name__ == "__main__":
     print("\t1. Enter the command followed by the input file, output file, and depth.")
     print("\t2. Input files must be in the provided test_files directory.\n")
     print("Format: \n")
-    print("\t<command> <input_file.txt> <output_file.txt> <depth>\n")
+    print("\t   <command> <input_file.txt> <output_file.txt> <depth>\n")
     print("Type 'help' for a list of acceptable commands.")
     print("Type 'exit' or 'quit' to end the program.")
 
