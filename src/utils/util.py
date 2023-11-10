@@ -88,7 +88,9 @@ def display_help():
         "MiniMaxOpeningBlack",
         "MiniMaxGameBlack",
         "MiniMaxOpeningImproved",
-        "MiniMaxGameImproved"
+        "MiniMaxGameImproved",
+        "ABOpeningImproved",
+        "ABGameImproved"
     ]
     print("\nList of acceptable commands:\n")
     for cmd in commands:
