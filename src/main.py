@@ -15,17 +15,47 @@ from modules.minimax_game_improved import MiniMaxGameImproved
 
 
 def open_board(input_file):
+    """
+    Reads the game board state from a file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+
+    Returns:
+    - list: The board state as a list of characters.
+    """
     with open(input_file, 'r') as f:
         board = list(f.readline().strip())
     return board
 
 
 def write_best_move(output_file, best_move):
+    """
+    Writes the best move to an output file.
+
+    Parameters:
+    - output_file (str): The path to the file where the best move will be written.
+    - best_move (list): The best move determined by the game algorithm.
+
+    Returns:
+    - None
+    """
     with open(output_file, 'w') as f:
         f.write(''.join(best_move))
 
 
 def mini_max_opening_main(input_file, output_file, depth):
+    """
+    Executes the MiniMax algorithm for the opening phase and writes the best move to the output file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - output_file (str): The path to the file where the best move will be written.
+    - depth (int): The depth for the MiniMax algorithm.
+
+    Returns:
+    - None
+    """
     game = MiniMaxOpening()
     try:
         board = open_board(input_file)
@@ -48,6 +78,17 @@ def mini_max_opening_main(input_file, output_file, depth):
 
 
 def mini_max_game_main(input_file, output_file, depth):
+    """
+    Executes the MiniMax algorithm for the midgame/endgame phase and writes the best move to the output file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - output_file (str): The path to the file where the best move will be written.
+    - depth (int): The depth for the MiniMax algorithm.
+
+    Returns:
+    - None
+    """
     game = MiniMaxGame()
     try:
         board = open_board(input_file)
@@ -70,6 +111,17 @@ def mini_max_game_main(input_file, output_file, depth):
 
 
 def ab_opening_main(input_file, output_file, depth):
+    """
+    Executes the Alpha-Beta pruning algorithm for the opening phase and writes the best move to the output file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - output_file (str): The path to the file where the best move will be written.
+    - depth (int): The depth for the Alpha-Beta pruning algorithm.
+
+    Returns:
+    - None
+    """
     game = ABOpening()
     try:
         board = open_board(input_file)
@@ -92,6 +144,17 @@ def ab_opening_main(input_file, output_file, depth):
 
 
 def ab_game_main(input_file, output_file, depth):
+    """
+    Executes the Alpha-Beta pruning algorithm for the midgame/endgame phase and writes the best move to the output file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - output_file (str): The path to the file where the best move will be written.
+    - depth (int): The depth for the Alpha-Beta pruning algorithm.
+
+    Returns:
+    - None
+    """
     game = ABGame()
     try:
         board = open_board(input_file)
@@ -113,6 +176,18 @@ def ab_game_main(input_file, output_file, depth):
 
 
 def mini_max_opening_black_main(input_file, output_file, depth):
+    """
+    Executes the MiniMax algorithm for the opening phase from the black player's perspective and writes the best move to
+    the output file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - output_file (str): The path to the file where the best move will be written.
+    - depth (int): The depth for the MiniMax algorithm.
+
+    Returns:
+    - None
+    """
     game = MiniMaxOpeningBlack()
     try:
         board = open_board(input_file)
@@ -135,6 +210,18 @@ def mini_max_opening_black_main(input_file, output_file, depth):
 
 
 def mini_max_game_black_main(input_file, output_file, depth):
+    """
+    Executes the MiniMax algorithm for the midgame/endgame phase from the black player's perspective and writes the
+    best move to the output file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - output_file (str): The path to the file where the best move will be written.
+    - depth (int): The depth for the MiniMax algorithm.
+
+    Returns:
+    - None
+    """
     game = MiniMaxGameBlack()
     try:
         board = open_board(input_file)
@@ -157,6 +244,18 @@ def mini_max_game_black_main(input_file, output_file, depth):
 
 
 def mini_max_opening_improved_main(input_file, output_file, depth):
+    """
+    Executes an improved version of the MiniMax algorithm for the opening phase and writes the best move to the
+    output file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - output_file (str): The path to the file where the best move will be written.
+    - depth (int): The depth for the improved MiniMax algorithm.
+
+    Returns:
+    - None
+    """
     game = MiniMaxOpeningImproved()
     try:
         board = open_board(input_file)
@@ -179,6 +278,18 @@ def mini_max_opening_improved_main(input_file, output_file, depth):
 
 
 def mini_max_game_improved_main(input_file, output_file, depth):
+    """
+    Executes an improved version of the MiniMax algorithm for the midgame/endgame phase and writes the best move
+    to the output file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - output_file (str): The path to the file where the best move will be written.
+    - depth (int): The depth for the improved MiniMax algorithm.
+
+    Returns:
+    - None
+    """
     game = MiniMaxGameImproved()
     try:
         board = open_board(input_file)
@@ -200,6 +311,12 @@ def mini_max_game_improved_main(input_file, output_file, depth):
 
 
 def display_help():
+    """
+    Displays the help information with a list of acceptable commands.
+
+    Returns:
+    - None
+    """
     commands = [
         "MiniMaxOpening",
         "MiniMaxGame",
