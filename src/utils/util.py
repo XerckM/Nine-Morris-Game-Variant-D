@@ -21,8 +21,15 @@ def open_board(input_file):
     - ValueError: If the file extension is not .txt.
     - FileNotFoundError: If the file is not found in the test_files directory.
     """
-    # Construct the full path to the file
-    full_path = os.path.join("../test_files", input_file)
+    # Get the directory of the current script
+    current_script_dir = os.path.dirname(__file__)
+
+    # Navigate up two levels to get the root directory
+    root_dir = os.path.abspath(os.path.join(current_script_dir, '..', '..'))
+
+    # Construct the full path to the test_files directory
+    test_files_dir = os.path.join(root_dir, 'test_files')
+    full_path = os.path.join(test_files_dir, input_file)
 
     # Read the file
     try:
@@ -57,8 +64,15 @@ def write_best_move(output_file, best_move):
     - ValueError: If the file extension is not .txt.
     - IOError: If an error occurs during file writing.
     """
-    # Construct the full path to the file
-    full_path = os.path.join("../test_files", output_file)
+    # Get the directory of the current script
+    current_script_dir = os.path.dirname(__file__)
+
+    # Navigate up two levels to get the root directory
+    root_dir = os.path.abspath(os.path.join(current_script_dir, '..', '..'))
+
+    # Construct the full path to the test_files directory
+    test_files_dir = os.path.join(root_dir, 'test_files')
+    full_path = os.path.join(test_files_dir, output_file)
 
     # Write the file
     try:
