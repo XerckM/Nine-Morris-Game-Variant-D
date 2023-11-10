@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from utils.common_functions import (
+from utils.util import (
     generate_add, static_estimation_opening_improved
 )
 
@@ -34,3 +34,6 @@ class MiniMaxOpeningImproved:
                 min_eval = eval_value
                 best_move = move
         return min_eval, best_move
+
+    def play_game(self, board, depth):
+        return self.minimax_opening_improved(board, depth, True)

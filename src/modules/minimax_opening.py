@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from utils.common_functions import generate_add, static_estimation_opening
+from utils.util import generate_add, static_estimation_opening
 
 
 class MiniMaxOpening:
@@ -32,3 +32,6 @@ class MiniMaxOpening:
                 min_eval = eval_value
                 best_move = move
         return min_eval, best_move
+
+    def play_game(self, board, depth):
+        return self.minimax_opening(board, depth, True)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from utils.common_functions import (
+from utils.util import (
     static_estimation_opening_improved, generate_moves_midgame_endgame,
     static_estimation_midgame_endgame_improved, reset_positions_evaluated,
     get_positions_evaluated
@@ -38,3 +38,6 @@ class MiniMaxGameImproved:
                 min_eval = eval_value
                 best_move = move
         return min_eval, best_move
+
+    def play_game(self, board, depth):
+        return self.minimax_game_improved(board, depth, True)

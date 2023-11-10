@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from utils.common_functions import (
+from utils.util import (
     static_estimation_opening, generate_move, generate_hopping,
     static_estimation_midgame_endgame
 )
@@ -43,3 +43,6 @@ class ABGame:
             if beta <= alpha:
                 break
         return min_eval, best_move
+
+    def play_game(self, board, depth):
+        return self.ab_game(board, depth, float('-inf'), float('inf'), True)

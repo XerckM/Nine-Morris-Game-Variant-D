@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from utils.common_functions import (
+from utils.util import (
     generate_add, static_estimation_opening,
     invert_board
 )
@@ -36,3 +36,6 @@ class MiniMaxOpeningBlack:
                 min_eval = eval_value
                 best_move = move
         return min_eval, invert_board(best_move)
+
+    def play_game(self, board, depth):
+        return self.minimax_opening_black(board, depth, True)

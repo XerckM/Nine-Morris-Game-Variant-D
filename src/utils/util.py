@@ -4,6 +4,69 @@
 positions_evaluated = 0
 
 
+def open_board(input_file):
+    """
+    Reads the game board state from a file.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+
+    Returns:
+    - list: The board state as a list of characters.
+    """
+    with open(input_file, 'r') as f:
+        board = list(f.readline().strip())
+    return board
+
+
+def write_best_move(output_file, best_move):
+    """
+    Writes the best move to an output file.
+
+    Parameters:
+    - output_file (str): The path to the file where the best move will be written.
+    - best_move (list): The best move determined by the game algorithm.
+
+    Returns:
+    - None
+    """
+    with open(output_file, 'w') as f:
+        f.write(''.join(best_move))
+
+
+def display_help():
+    """
+    Displays the help information with a list of acceptable commands.
+
+    Returns:
+    - None
+    """
+    commands = [
+        "MiniMaxOpening",
+        "MiniMaxGame",
+        "ABOpening",
+        "ABGame",
+        "MiniMaxOpeningBlack",
+        "MiniMaxGameBlack",
+        "MiniMaxOpeningImproved",
+        "MiniMaxGameImproved"
+    ]
+    print("List of acceptable commands:\n")
+    for cmd in commands:
+        print(f"{cmd}")
+    print()
+
+
+def ascii_title():
+    print("""
+███    ██ ██ ███    ██ ███████     ███    ███ ███████ ███    ██     ███    ███  ██████  ██████  ██████  ██ ███████ 
+████   ██ ██ ████   ██ ██          ████  ████ ██      ████   ██     ████  ████ ██    ██ ██   ██ ██   ██ ██ ██      
+██ ██  ██ ██ ██ ██  ██ █████       ██ ████ ██ █████   ██ ██  ██     ██ ████ ██ ██    ██ ██████  ██████  ██ ███████ 
+██  ██ ██ ██ ██  ██ ██ ██          ██  ██  ██ ██      ██  ██ ██     ██  ██  ██ ██    ██ ██   ██ ██   ██ ██      ██ 
+██   ████ ██ ██   ████ ███████     ██      ██ ███████ ██   ████     ██      ██  ██████  ██   ██ ██   ██ ██ ███████ 
+""")
+
+
 def reset_positions_evaluated():
     """
     Reset the global counter for positions evaluated.

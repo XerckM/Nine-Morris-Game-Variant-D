@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from utils.common_functions import (
+from utils.util import (
     generate_add, static_estimation_opening
 )
 
@@ -41,3 +41,6 @@ class ABOpening:
             if beta <= alpha:
                 break
         return min_eval, best_move
+
+    def play_game(self, board, depth):
+        return self.ab_opening(board, depth, float('-inf'), float('inf'), True)
