@@ -22,7 +22,7 @@ def open_board(input_file):
     - FileNotFoundError: If the file is not found in the test_files directory.
     """
     # Construct the full path to the file
-    full_path = os.path.join("./test_files", input_file)
+    full_path = os.path.join("../test_files", input_file)
 
     # Read the file
     try:
@@ -58,7 +58,7 @@ def write_best_move(output_file, best_move):
     - IOError: If an error occurs during file writing.
     """
     # Construct the full path to the file
-    full_path = os.path.join("./test_files", output_file)
+    full_path = os.path.join("../test_files", output_file)
 
     # Write the file
     try:
