@@ -102,13 +102,11 @@ def ascii_title():
     This function outputs a stylized ASCII art representation of a title.
     It is used for display purposes to enhance the visual appeal of the console output.
     """
-    print("""
-██████  ██████   ██████       ██ ███████  ██████ ████████     ██████  
-██   ██ ██   ██ ██    ██      ██ ██      ██         ██             ██ 
-██████  ██████  ██    ██      ██ █████   ██         ██         █████  
-██      ██   ██ ██    ██ ██   ██ ██      ██         ██        ██      
-██      ██   ██  ██████   █████  ███████  ██████    ██        ███████
-""")
+    print("██████  ██████   ██████       ██ ███████  ██████ ████████     ██████")
+    print("██   ██ ██   ██ ██    ██      ██ ██      ██         ██             ██")
+    print("██████  ██████  ██    ██      ██ █████   ██         ██         █████")
+    print("██      ██   ██ ██    ██ ██   ██ ██      ██         ██        ██")
+    print("██      ██   ██  ██████   █████  ███████  ██████    ██        ███████\n")
 
 
 def reset_positions_evaluated():
