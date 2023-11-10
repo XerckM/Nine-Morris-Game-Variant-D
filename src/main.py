@@ -333,21 +333,27 @@ def display_help():
     print()
 
 
+def ascii_title():
+    print("""
+███    ██ ██ ███    ██ ███████     ███    ███ ███████ ███    ██     ███    ███  ██████  ██████  ██████  ██ ███████ 
+████   ██ ██ ████   ██ ██          ████  ████ ██      ████   ██     ████  ████ ██    ██ ██   ██ ██   ██ ██ ██      
+██ ██  ██ ██ ██ ██  ██ █████       ██ ████ ██ █████   ██ ██  ██     ██ ████ ██ ██    ██ ██████  ██████  ██ ███████ 
+██  ██ ██ ██ ██  ██ ██ ██          ██  ██  ██ ██      ██  ██ ██     ██  ██  ██ ██    ██ ██   ██ ██   ██ ██      ██ 
+██   ████ ██ ██   ████ ███████     ██      ██ ███████ ██   ████     ██      ██  ██████  ██   ██ ██   ██ ██ ███████ 
+""")
+
+
 if __name__ == "__main__":
-    print("Nine Morris Game Variant D\n")
+    ascii_title()
     print("Instructions: Enter the command followed by the input file, output file, and depth.\n")
-    print("Format: <command> <input_file_location> <output_file_location> <depth>\n")
-    print("Example: \n\n "
-          "MiniMaxOpening input.txt output.txt 3\n\n "
-          "or \n\n "
-          "MiniMaxOpeningBlack ./test/input.txt ./test/output.txt 3\n")
+    print("Format: <command> <path_to_input_file> <path_to_output_file> <depth>\n")
     print("Type '-help' for a list of acceptable commands.")
     print("Type 'exit' or 'quit' to end the program.\n")
 
     while True:
         reset_positions_evaluated()
 
-        command = input(">>> ")
+        command = input("Enter command >>> ")
         parts = command.split()
 
         if command.lower() in ["exit", "quit"]:

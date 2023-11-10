@@ -399,6 +399,7 @@ def generate_moves_midgame_endgame(board):
 def count_mills(board, player):
     """
     Count the number of mills for a given player.
+    Dividing by 3 because each mill is counted thrice
 
     Parameters:
     - board (list): The current board configuration.
@@ -407,11 +408,7 @@ def count_mills(board, player):
     Returns:
     - int: The number of mills the player has.
     """
-    mills = 0
-    for i in range(len(board)):
-        if board[i] == player and close_mill(i, board):
-            mills += 1
-    return mills // 3  # Dividing by 3 because each mill is counted thrice
+    return sum(1 for i in range(len(board)) if board[i] == player and close_mill(i, board)) // 3
 
 
 def count_potential_mills(board, player):
@@ -425,14 +422,8 @@ def count_potential_mills(board, player):
     Returns:
     - int: The number of potential mills the player has.
     """
-    potential_mills = 0
-    for i in range(len(board)):
-        if board[i] == player:
-            neighbors = get_neighbors(i)
-            count = sum(1 for j in neighbors if board[j] == player)
-            if count == 2:
-                potential_mills += 1
-    return potential_mills
+    return sum(1 for i in range(len(board)) if board[i] == player and
+               sum(1 for j in get_neighbors(i) if board[j] == player) == 2)
 
 
 def count_double_mills(board, player):
@@ -446,16 +437,9 @@ def count_double_mills(board, player):
     Returns:
     - int: The number of pieces that are part of two mills.
     """
-    double_mills = 0
-    for i in range(len(board)):
-        if board[i] == player:
-            mills_at_position = 0
-            for j in get_neighbors(i):
-                if board[j] == player and close_mill(j, board):
-                    mills_at_position += 1
-            if mills_at_position == 2:
-                double_mills += 1
-    return double_mills
+    return sum(1 for i in range(len(board)) if board[i] == player and
+               sum(1 for j in get_neighbors(i) if board[j] == player and
+                   close_mill(j, board)) == 2)
 
 
 def count_blocked_pieces(board, player):
@@ -479,20 +463,6 @@ def count_blocked_pieces(board, player):
             if not moves:
                 blocked_pieces += 1
     return blocked_pieces
-
-
-def distance_to_conversion(board, player):
-    """
-    Calculate the distance to conversion (number of pieces more than 3).
-
-    Parameters:
-    - board (list): The current board configuration.
-    - player (str): The player to check the distance to conversion for ('W' for white, 'B' for black).
-
-    Returns:
-    - int: The distance to conversion for the player.
-    """
-    return max(0, board.count(player) - 3)
 
 
 def count_center_control(board, player):
@@ -540,11 +510,8 @@ def count_safe_pieces(board, player):
     Returns:
     - int: The number of safe pieces the player has.
     """
-    safe_pieces = 0
-    for i in range(len(board)):
-        if board[i] == player and (close_mill(i, board) or not can_be_removed(i, board)):
-            safe_pieces += 1
-    return safe_pieces
+    return sum(1 for i in range(len(board)) if board[i] == player and
+               (close_mill(i, board) or not can_be_removed(i, board)))
 
 
 def count_threats(board, player):
@@ -558,19 +525,10 @@ def count_threats(board, player):
     Returns:
     - int: The number of threats against the player's pieces.
     """
-    threats = 0
     opponent = 'B' if player == 'W' else 'W'
-    for i in range(len(board)):
-        if board[i] == player:
-            temp_board = board.copy()
-            temp_board[i] = 'x'
-            for j in get_neighbors(i):
-                if temp_board[j] == 'x':
-                    temp_board[j] = opponent
-                    if close_mill(j, temp_board):
-                        threats += 1
-                    temp_board[j] = 'x'
-    return threats
+    return sum(1 for i in range(len(board)) if board[i] == player and
+               any(close_mill(j, board[:i] + [opponent] + board[i+1:])
+                   for j in get_neighbors(i) if board[j] == 'x'))
 
 
 def piece_vulnerability(position, board):
@@ -618,12 +576,8 @@ def static_estimation_opening_improved(board):
     This improved static estimation function considers various factors such as:
     - Basic piece difference
     - Number of mills and potential mills
-    - Number of double mills
-    - Number of blocked pieces
     - Control of central positions
-    - Number of safe pieces (pieces that are part of a mill or cannot be removed)
     - Number of pieces threatened to be part of an opponent's mill in the next move
-    - Vulnerability of pieces (how exposed a piece is to potential threats)
     - Strength of pieces (how well a piece is positioned to make or block mills)
 
     Parameters:
@@ -643,35 +597,20 @@ def static_estimation_opening_improved(board):
     white_potential_mills = count_potential_mills(board, 'W')
     black_potential_mills = count_potential_mills(board, 'B')
 
-    white_double_mills = count_double_mills(board, 'W')
-    black_double_mills = count_double_mills(board, 'B')
-
-    white_blocked = count_blocked_pieces(board, 'W')
-    black_blocked = count_blocked_pieces(board, 'B')
-
     white_center_control = count_center_control(board, 'W')
     black_center_control = count_center_control(board, 'B')
-
-    white_safe_pieces = count_safe_pieces(board, 'W')
-    black_safe_pieces = count_safe_pieces(board, 'B')
 
     white_threats = count_threats(board, 'W')
     black_threats = count_threats(board, 'B')
 
-    white_vulnerability = sum(piece_vulnerability(i, board) for i, piece in enumerate(board) if piece == 'W')
-    black_vulnerability = sum(piece_vulnerability(i, board) for i, piece in enumerate(board) if piece == 'B')
-
     white_strength = sum(piece_strength(i, board) for i, piece in enumerate(board) if piece == 'W')
     black_strength = sum(piece_strength(i, board) for i, piece in enumerate(board) if piece == 'B')
 
+    # Return the static estimation
     return (piece_diff + 2 * (white_mills - black_mills) +
             (white_potential_mills - black_potential_mills) +
-            2 * (white_double_mills - black_double_mills) -
-            (white_blocked - black_blocked) +
-            (white_center_control - black_center_control) +
-            (white_safe_pieces - black_safe_pieces) -
-            (white_threats - black_threats) -
-            (white_vulnerability - black_vulnerability) +
+            (white_center_control - black_center_control) -
+            (white_threats - black_threats) +
             (white_strength - black_strength))
 
 
@@ -684,7 +623,6 @@ def static_estimation_midgame_endgame_improved(board):
     - Number of mills and potential mills
     - Number of double mills
     - Number of blocked pieces
-    - Distance to conversion (number of pieces more than 3)
     - Control of central positions
     - Number of safe pieces (pieces that are part of a mill or cannot be removed)
     - Number of pieces threatened to be part of an opponent's mill in the next move
@@ -716,9 +654,6 @@ def static_estimation_midgame_endgame_improved(board):
     white_blocked = count_blocked_pieces(board, 'W')
     black_blocked = count_blocked_pieces(board, 'B')
 
-    white_distance_conversion = distance_to_conversion(board, 'W')
-    black_distance_conversion = distance_to_conversion(board, 'B')
-
     white_center_control = count_center_control(board, 'W')
     black_center_control = count_center_control(board, 'B')
 
@@ -736,8 +671,7 @@ def static_estimation_midgame_endgame_improved(board):
 
     return (1000 * (num_white_pieces - num_black_pieces) - num_black_moves +
             2 * (white_mills - black_mills) + (white_potential_mills - black_potential_mills) +
-            2 * (white_double_mills - black_double_mills) - (white_blocked - black_blocked) -
-            (white_distance_conversion - black_distance_conversion) +
+            2 * (white_double_mills - black_double_mills) - (white_blocked - black_blocked) +
             (white_center_control - black_center_control) +
             (white_safe_pieces - black_safe_pieces) - (white_threats - black_threats) -
             (white_vulnerability - black_vulnerability) + (white_strength - black_strength))
