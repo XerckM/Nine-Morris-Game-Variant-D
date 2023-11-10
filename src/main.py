@@ -86,8 +86,11 @@ def game_main(game_class: Callable[..., Any], input_file: str, output_file: str,
 
 if __name__ == "__main__":
     ascii_title()
-    print("Instructions: Enter the command followed by the input file, output file, and depth.\n")
-    print("Format: <command> <path_to_input_file> <path_to_output_file> <depth>\n")
+    print("Instructions: \n")
+    print("\t1. Enter the command followed by the input file, output file, and depth.")
+    print("\t2. Input files must be in the provided test_files directory.\n")
+    print("Format: \n")
+    print("\t<command> <input_file.txt> <output_file.txt> <depth>\n")
     print("Type 'help' for a list of acceptable commands.")
     print("Type 'exit' or 'quit' to end the program.")
 
