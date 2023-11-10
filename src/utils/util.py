@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import os
+
+
 # Global variable to keep track of positions evaluated
 positions_evaluated = 0
 
@@ -13,10 +16,30 @@ def open_board(input_file):
 
     Returns:
     - list: The board state as a list of characters.
+
+    Raises:
+    - ValueError: If the file extension is not .txt.
+    - FileNotFoundError: If the file is not found in the test_files directory.
     """
-    with open(input_file, 'r') as f:
-        board = list(f.readline().strip())
-    return board
+    # Construct the full path to the file
+    full_path = os.path.join("./test_files", input_file)
+
+    # Read the file
+    try:
+        # Check if the file extension is .txt
+        if not input_file.endswith('.txt'):
+            raise ValueError("Input file must be a .txt file")
+
+        with open(full_path, 'r') as f:
+            board = list(f.readline().strip())
+
+        return board
+    except FileNotFoundError:
+        # Handle file not found error
+        raise FileNotFoundError(f"The file '{input_file}' was not found in the test_files directory")
+    except Exception as e:
+        # Handle other potential exceptions
+        raise IOError(f"{e}")
 
 
 def write_best_move(output_file, best_move):
@@ -24,14 +47,30 @@ def write_best_move(output_file, best_move):
     Writes the best move to an output file.
 
     Parameters:
-    - output_file (str): The path to the file where the best move will be written.
+    - output_file (str): The name of the file (without path) where the best move will be written.
     - best_move (list): The best move determined by the game algorithm.
 
     Returns:
     - None
+
+    Raises:
+    - ValueError: If the file extension is not .txt.
+    - IOError: If an error occurs during file writing.
     """
-    with open(output_file, 'w') as f:
-        f.write(''.join(best_move))
+    # Construct the full path to the file
+    full_path = os.path.join("./test_files", output_file)
+
+    # Write the file
+    try:
+        # Check if the file extension is .txt
+        if not output_file.endswith('.txt'):
+            raise ValueError("Output file must be a .txt file")
+
+        with open(full_path, 'w') as f:
+            f.write(''.join(best_move))
+
+    except Exception as e:
+        raise IOError(f"{e}")
 
 
 def display_help():
@@ -51,13 +90,18 @@ def display_help():
         "MiniMaxOpeningImproved",
         "MiniMaxGameImproved"
     ]
-    print("List of acceptable commands:\n")
+    print("\nList of acceptable commands:\n")
     for cmd in commands:
         print(f"{cmd}")
-    print()
 
 
 def ascii_title():
+    """
+    Prints the ASCII art title.
+
+    This function outputs a stylized ASCII art representation of a title.
+    It is used for display purposes to enhance the visual appeal of the console output.
+    """
     print("""
 ███    ██ ██ ███    ██ ███████     ███    ███ ███████ ███    ██     ███    ███  ██████  ██████  ██████  ██ ███████ 
 ████   ██ ██ ████   ██ ██          ████  ████ ██      ████   ██     ████  ████ ██    ██ ██   ██ ██   ██ ██ ██      

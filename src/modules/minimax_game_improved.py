@@ -8,11 +8,27 @@ from utils.util import (
 
 
 class MiniMaxGameImproved:
+    """
+    This class handles the logic for the opening phase of the Nine Men's Morris game using an improved version of
+    the Minimax algorithm.
+    It provides methods to generate moves and evaluate the best move for the opening phase with an enhanced
+    static evaluation.
+    """
     def __init__(self):
         pass
 
     def minimax_game_improved(self, board, depth, is_maximizing):
-        """Minimax algorithm for the game phase with improved static estimation."""
+        """
+        Execute an improved Minimax algorithm for the midgame or endgame phase of the game.
+
+        Parameters:
+        - board (list): The current board configuration.
+        - depth (int): The maximum depth of the game tree to explore.
+        - is_maximizing (bool): True if the current move is maximizing; False if minimizing.
+
+        Returns:
+        - tuple: A tuple containing the static evaluation and the best move board configuration.
+        """
         if depth == 0:
             if board.count('W') > 3:
                 return static_estimation_midgame_endgame_improved(board), board
@@ -40,4 +56,14 @@ class MiniMaxGameImproved:
         return min_eval, best_move
 
     def play_game(self, board, depth):
+        """
+        Initiates the play of the midgame or endgame phase with an improved Minimax algorithm from the current board state.
+
+        Parameters:
+        - board (list): The current board configuration.
+        - depth (int): The maximum depth of the game tree to explore.
+
+        Returns:
+        - tuple: A tuple containing the static evaluation and the best move board configuration.
+        """
         return self.minimax_game_improved(board, depth, True)

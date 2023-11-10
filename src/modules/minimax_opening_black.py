@@ -7,11 +7,27 @@ from utils.util import (
 
 
 class MiniMaxOpeningBlack:
+    """
+    This class handles the logic for the opening phase of the Nine Men's Morris game for the black pieces
+    using the Minimax algorithm.
+    It provides methods to generate moves and evaluate the best move for the opening phase from the perspective
+    of the black player.
+    """
     def __init__(self):
         pass
 
     def minimax_opening_black(self, board, depth, is_maximizing):
-        """Minimax algorithm for the opening phase for black."""
+        """
+        Execute the Minimax algorithm for the opening phase of the game for the black player.
+
+        Parameters:
+        - board (list): The current board configuration.
+        - depth (int): The maximum depth of the game tree to explore.
+        - is_maximizing (bool): True if the current move is maximizing; False if minimizing.
+
+        Returns:
+        - tuple: A tuple containing the static evaluation and the best move board configuration.
+        """
         board = invert_board(board)
         if depth == 0:
             return -static_estimation_opening(board), board
@@ -38,4 +54,15 @@ class MiniMaxOpeningBlack:
         return min_eval, invert_board(best_move)
 
     def play_game(self, board, depth):
+        """
+        Initiates the play of the opening phase with the Minimax algorithm from the current board state for
+        the black player.
+
+        Parameters:
+        - board (list): The current board configuration.
+        - depth (int): The maximum depth of the game tree to explore.
+
+        Returns:
+        - tuple: A tuple containing the static evaluation and the best move board configuration.
+        """
         return self.minimax_opening_black(board, depth, True)

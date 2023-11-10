@@ -7,11 +7,28 @@ from utils.util import (
 
 
 class ABGame:
+    """
+    This class handles the logic for the midgame and endgame phases of the Nine Men's Morris game using the
+    Alpha-Beta pruning algorithm.
+    It provides methods to generate moves and evaluate the best move for these phases with optimization.
+    """
     def __init__(self):
         pass
 
     def ab_game(self, board, depth, alpha, beta, is_maximizing):
-        """Alpha-Beta pruning algorithm for the game phase."""
+        """
+        Execute the Alpha-Beta pruning algorithm for the midgame or endgame phase of the game.
+
+        Parameters:
+        - board (list): The current board configuration.
+        - depth (int): The maximum depth of the game tree to explore.
+        - alpha (float): The alpha value for pruning.
+        - beta (float): The beta value for pruning.
+        - is_maximizing (bool): True if the current move is maximizing; False if minimizing.
+
+        Returns:
+        - tuple: A tuple containing the static evaluation and the best move board configuration.
+        """
         if depth == 0:
             if board.count('W') > 3:
                 return static_estimation_midgame_endgame(board), board
@@ -45,4 +62,15 @@ class ABGame:
         return min_eval, best_move
 
     def play_game(self, board, depth):
+        """
+        Initiates the play of the midgame or endgame phase with the Alpha-Beta pruning algorithm from the current
+        board state.
+
+        Parameters:
+        - board (list): The current board configuration.
+        - depth (int): The maximum depth of the game tree to explore.
+
+        Returns:
+        - tuple: A tuple containing the static evaluation and the best move board configuration.
+        """
         return self.ab_game(board, depth, float('-inf'), float('inf'), True)
