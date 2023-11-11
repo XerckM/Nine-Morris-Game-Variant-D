@@ -3,8 +3,13 @@
 import sys
 import os
 
-# Add the src directory to sys.path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+# Determine if running as a script or as a compiled file
+if __file__.endswith('.pyc'):
+    # If running as compiled file in bin, adjust path accordingly
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+else:
+    # If running as a script, use the original path setup
+    sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 from typing import Callable, Any
 from utils.util import (
@@ -97,19 +102,21 @@ def game_main(game_class: Callable[..., Any], input_file: str, output_file: str,
         print(f"\nError: {e}")
 
 
-if __name__ == "__main__":
+def main():
     ascii_title()
     print("Instructions: \n")
     print("\t1. Enter the command followed by the input file, output file, and depth.")
     print("\t2. Input files must be in the provided test_files directory.\n")
     print("Format: \n")
-    print("\t   <command> <input_file.txt> <output_file.txt> <depth>\n")
+    print("\t<command> <input_file.txt> <output_file.txt> <depth>\n")
+    print("Example input: \n")
+    print("\tMiniMaxOpening board1.txt board2.txt 2\n")
     print("Type 'help' for a list of acceptable commands.")
     print("Type 'exit' or 'quit' to end the program.")
 
     while True:
         try:
-            command = input("\nEnter command >>> ")
+            command = input("\nEnter input >>> ")
             parts = command.split()
 
             if command.lower() in ["exit", "quit"]:
@@ -136,3 +143,7 @@ if __name__ == "__main__":
 
         except Exception as e:
             print(f"\nError: {e}")
+
+
+if __name__ == "__main__":
+    main()
