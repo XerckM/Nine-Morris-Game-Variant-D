@@ -7,6 +7,54 @@ import os
 positions_evaluated = 0
 
 
+def print_board(input_file, ascii_board_file):
+    """
+    Prints the game board of the current board positions from a string to an ascii representation.
+
+    Parameters:
+    - input_file (str): The path to the file containing the initial board state.
+    - ascii_board_file (str): The path to the file containing the ascii representation of the board.
+
+    Returns:
+    - ascii_board (str): The ascii representation of the board.
+    """
+    # Read the ASCII board from the file
+    with open(ascii_board_file, 'r') as file:
+        ascii_board = file.read()
+
+    # Use the open_board function to read the board state from the input file
+    board_state = open_board(input_file)
+
+    # Define the mapping of board positions to indices in the board state
+    position_mapping = {
+        'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5,
+        'g': 6, 'h': 7, 'i': 8, 'j': 9, 'k': 10, 'l': 11,
+        'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17,
+        's': 18, 't': 19, 'u': 20, 'v': 21, 'w': 22
+    }
+
+    # Replace the positions in the ASCII board with pieces from the board state
+    for position, index in position_mapping.items():
+        ascii_board = ascii_board.replace(position, board_state[index])
+
+    # Print the modified board
+    return ascii_board
+
+
+def get_ascii_board_path():
+    # Determine the base directory depending on how the script is run
+    if __file__.endswith('.pyc'):
+        # If running as compiled file in bin, adjust path accordingly
+        base_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+    else:
+        # If running as a script, use the project root
+        base_dir = os.path.dirname(os.path.dirname(__file__))
+
+    # Construct the path to ascii_board.txt
+    ascii_board_path = os.path.join(base_dir, 'assets', 'ascii_board.txt')
+    return ascii_board_path
+
+
 def open_board(input_file):
     """
     Reads the game board state from a file.
