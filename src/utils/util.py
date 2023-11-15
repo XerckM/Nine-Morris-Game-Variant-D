@@ -158,6 +158,10 @@ def display_help():
     for cmd in commands:
         print(f"{cmd}")
 
+    print("\nOther Commands:\n")
+    print("Type 'help' to display this help information.")
+    print("Type 'exit' to exit the program.")
+
 
 def ascii_title():
     """
