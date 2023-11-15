@@ -100,8 +100,8 @@ def game_main(game_class: Callable[..., Any], input_file: str, output_file: str,
         initial_board_lines = initial_board_str.split('\n')
         new_board_lines = new_board_str.split('\n')
 
-        # Print the boards side by side
-        print("\nInitial Board State: \t\t\t\t\t New Board State:\n")
+        # Print the boards side by side with consistent spacing
+        print("\nInput Board State: " + " " * 22 + "Output Board State:\n")
         for initial_line, new_line in zip(initial_board_lines, new_board_lines):
             print(f"{initial_line:40} {new_line}")
 
