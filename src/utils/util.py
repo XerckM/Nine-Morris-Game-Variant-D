@@ -46,6 +46,15 @@ def print_board(input_file, ascii_board_file):
 
 
 def get_ascii_board_path():
+    """
+    Returns the path to the ascii_board.txt file.
+
+    Parameters:
+    - None
+
+    Returns:
+    - ascii_board_path (str): The path to the ascii_board.txt file.
+    """
     # Determine the base directory depending on how the script is run
     if __file__.endswith('.pyc'):
         # If running as compiled file in bin, adjust path accordingly
