@@ -18,7 +18,9 @@ from utils.util import (
     open_board,
     write_best_move,
     display_help,
-    ascii_title
+    ascii_title,
+    print_board,
+    get_ascii_board_path
 )
 from modules.minimax_opening import MiniMaxOpening
 from modules.minimax_game import MiniMaxGame
@@ -85,11 +87,25 @@ def game_main(game_class: Callable[..., Any], input_file: str, output_file: str,
     try:
         game = game_class()
         board = open_board(input_file)
+        ascii_board = get_ascii_board_path()
         estimate, best_move = game.play_game(board, depth)
 
         write_best_move(output_file, best_move)
 
-        print(f"\nInput position: {''.join(board)}")
+        # Get the ASCII board representations
+        initial_board_str = print_board(input_file, ascii_board)
+        new_board_str = print_board(output_file, ascii_board)
+
+        # Split the board strings into lines for side-by-side printing
+        initial_board_lines = initial_board_str.split('\n')
+        new_board_lines = new_board_str.split('\n')
+
+        # Print the boards side by side
+        print("\nInitial Board State: \t\t\t\t\t New Board State:\n")
+        for initial_line, new_line in zip(initial_board_lines, new_board_lines):
+            print(f"{initial_line:40} {new_line}")
+
+        print(f"Input position: {''.join(board)}")
         print(f"Output position: {''.join(best_move)}")
         print(f"Positions evaluated by static estimation: {get_positions_evaluated()}.")
 
