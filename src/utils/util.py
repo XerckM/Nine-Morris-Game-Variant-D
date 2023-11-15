@@ -35,7 +35,11 @@ def print_board(input_file, ascii_board_file):
 
     # Replace the positions in the ASCII board with pieces from the board state
     for position, index in position_mapping.items():
-        ascii_board = ascii_board.replace(position, board_state[index])
+        if board_state[index] == 'x':
+            star = '•'
+            ascii_board = ascii_board.replace(position, star)
+        else:
+            ascii_board = ascii_board.replace(position, board_state[index])
 
     # Print the modified board
     return ascii_board
